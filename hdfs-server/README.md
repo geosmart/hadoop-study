@@ -17,41 +17,27 @@ $ docker build -t mdouchement/hdfs .
 
 ```bash
 # Running and get a Bash interpreter
-$ docker run -p 22022:22 -p 8020:8020 -p 50010:50010 -p 50020:50020 -p 50070:50070 -p 50075:50075 -it mdouchement/hdfs
-
-# With NFS
-$ docker run -p 22022:22 -p 8020:8020 -p 50010:50010 -p 50020:50020 -p 50070:50070 -p 50075:50075 -p 111:111 -p 2049:2049 -it mdouchement/hdfs
-
-# Running as daemon
-$ docker run -p 22022:22 -p 8020:8020 -p 50010:50010 -p 50020:50020 -p 50070:50070 -p 50075:50075 -d mdouchement/hdfs
+$ docker run -p 9870:9870 -it mdouchement/hdfs
 ```
 
 ### Mapped Ports
 - Ports
-  - Portmap -> `111`
-  - NFS -> `2049`
-  - HDFS namenode -> `8020` (hdfs://localhost:8020)
-  - HDFS datanode -> `50010`
-  - HDFS datanode (ipc) -> `50020`
-  - HDFS Web browser -> `50070`
-  - HDFS datanode (http) -> `50075`
-  - HDFS secondary namenode -> `50090`
-  - SSH -> `22`
+  - webapi -> `9870`
 
 
 ## HTTP Api
 
 **Explore In Browser:**
 
-[http://localhost:50070](http://localhost:50070)
+[http://localhost:9870](http://localhost:9870)
 
 
 ## Create a folder
 
-PUT  http://localhost:50070/webhdfs/v1/clicks?op=MKDIRS
+PUT  http://localhost:9870/webhdfs/v1/clicks?op=MKDIRS
 
 **Use as reference:**
-[https://hadoop.apache.org/docs/r1.0.4/webhdfs.html](https://hadoop.apache.org/docs/r1.0.4/webhdfs.html)
+[https://hadoop.apache.org/docs/3.1.1/webhdfs.html](https://hadoop.apache.org/docs/3.1.1/webhdfs.html)
 
 
 ## CLI
