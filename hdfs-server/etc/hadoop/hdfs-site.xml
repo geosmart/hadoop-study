@@ -7,8 +7,12 @@
     <value>1</value>
   </property>
   <property>
-    <name>dfs.name.dir</name>
-    <value>opt/hadoop/dfs/name</value>
+    <name>dfs.namenode.name.dir</name>
+    <value>/home/root/Hadoop/NameNode</value>
+  </property>
+  <property>
+    <name>dfs.datanode.data.dir</name>
+    <value>/home/root/Hadoop/DataNode</value>
   </property>
 </configuration>
 
