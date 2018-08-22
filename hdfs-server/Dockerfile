@@ -50,23 +50,17 @@ RUN ./bin/hdfs namenode -format
 
 # ENTRYPOINT ["bash"]
 
+
+RUN echo "net.ipv6.conf.all.disable_ipv6 = 1" >> /etc/sysctl.conf
+RUN echo "net.ipv6.conf.default.disable_ipv6 = 1" >> /etc/sysctl.conf
+RUN echo "net.ipv6.conf.lo.disable_ipv6 = 1" >> /etc/sysctl.conf
+
+
 CMD service ssh start \
   && ./sbin/start-dfs.sh \
-  && ./sbin/hadoop-daemon.sh start portmap \
-  && ./sbin/hadoop-daemon.sh start nfs3 \
+  # && ./sbin/hadoop-daemon.sh start portmap \
+  # && ./sbin/hadoop-daemon.sh start nfs3 \
+  && bin/hdfs dfs -chown -R dr.who:dr.who / \
   && bash
-
-
-# RUN echo "\nHost *\n" >> ~/.ssh/config && \
-#     echo "   StrictHostKeyChecking no\n" >> ~/.ssh/config && \
-#     echo "   UserKnownHostsFile=/dev/null\n" >> ~/.ssh/config
-
-# # Disable sshd authentication
-# RUN echo "root:root" | chpasswd
-# RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-# # SSH login fix. Otherwise user is kicked off after login
-# RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
-# # => Quick fix for enabling datanode connections
-# #    ssh -L 50010:localhost:50010 root@192.168.99.100 -p 22022 -o PreferredAuthentications=password
 
 

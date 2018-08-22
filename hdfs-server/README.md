@@ -15,9 +15,10 @@ $ docker build -t mdouchement/hdfs .
 
 ## Run
 
+Use network host to can access datanodes
 ```bash
 # Running and get a Bash interpreter
-$ docker run -p 9870:9870 -it mdouchement/hdfs
+$ docker run --network=host -it mdouchement/hdfs
 ```
 
 ### Mapped Ports
@@ -44,7 +45,7 @@ PUT  http://localhost:9870/webhdfs/v1/clicks?op=MKDIRS
 inside docker
 
 ```bash
-$ hadoop fs  -ls /
+$ hadoop fs -ls /
 ```
 OR
 
