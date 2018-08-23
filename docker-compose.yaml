@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  namenode:
+    build: ./namenode
+    network_mode: host
+  datanode:
+    build: ./datanode
+    depends_on: 
+      - namenode
+    network_mode: host
