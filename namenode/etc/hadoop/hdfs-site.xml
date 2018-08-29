@@ -6,10 +6,6 @@
     <name>dfs.replication</name>
     <value>1</value>
   </property>
-  <!-- <property>
-    <name>dfs.hosts</name>
-    <value>/home/root/Hadoop/hosts</value>
-  </property> -->
    <property>
     <name>dfs.namenode.name.dir</name>
     <value>/home/root/Hadoop/NameNode</value>

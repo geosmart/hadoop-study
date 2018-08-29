@@ -10,6 +10,10 @@
     <name>dfs.datanode.data.dir</name>
     <value>/home/root/Hadoop/DataNode</value>
   </property>
+  <property> 
+    <name>dfs.permissions.enabled</name> 
+    <value>false</value> 
+  </property>
 </configuration>
 
 

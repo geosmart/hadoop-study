@@ -32,23 +32,11 @@ RUN echo "JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre" >> etc/hadoop/hadoop-
 
 RUN apt-get install openssh-client openssh-server pdsh net-tools -y
 
-
-ADD ssh/id_rsa /root/.ssh/id_rsa
-ADD ssh/id_rsa.pub /root/.ssh/id_rsa.pub
-ADD ssh/authorized_keys /root/.ssh/authorized_keys
-
-
-RUN echo "ssh" > /etc/pdsh/rcmd_default
-
-
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/jre
 
 RUN mkdir -p /home/root/Hadoop/DataNode
-RUN mkdir -p /home/root/Hadoop/NameNode
 
 EXPOSE 9866 9866 9864 9000
-# RUN ./bin/hdfs namenode -format
-
 
 RUN echo "net.ipv6.conf.all.disable_ipv6 = 1" >> /etc/sysctl.conf
 RUN echo "net.ipv6.conf.default.disable_ipv6 = 1" >> /etc/sysctl.conf
@@ -57,6 +45,7 @@ RUN echo "net.ipv6.conf.lo.disable_ipv6 = 1" >> /etc/sysctl.conf
 
 CMD service ssh start \
   && bin/hdfs datanode \
+  && bin/hdfs dfs -chown -R dr.who:dr.who / \
   && bash
 
 
