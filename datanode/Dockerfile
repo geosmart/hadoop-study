@@ -18,34 +18,26 @@ RUN apt install default-jre -y
 # Setup
 WORKDIR /opt/hadoop
 
-COPY etc/hadoop/core-site.xml etc/hadoop/core-site.xml
-COPY etc/hadoop/hdfs-site.xml etc/hadoop/hdfs-site.xml
-
-
-ENV HDFS_NAMENODE_USER root
 ENV HDFS_DATANODE_USER root
-ENV HDFS_SECONDARYNAMENODE_USER root
-ENV YARN_RESOURCEMANAGER_USER root
-ENV YARN_NODEMANAGER_USER root
 
 RUN echo "JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre" >> etc/hadoop/hadoop-env.sh 
 
 RUN apt-get install openssh-client openssh-server pdsh net-tools -y
 
+
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/jre
 
 RUN mkdir -p /home/root/Hadoop/DataNode
 
-EXPOSE 9866 9866 9864 9000
+COPY etc/hadoop/core-site.xml etc/hadoop/core-site.xml
+COPY etc/hadoop/hdfs-site.xml etc/hadoop/hdfs-site.xml
 
 RUN echo "net.ipv6.conf.all.disable_ipv6 = 1" >> /etc/sysctl.conf
 RUN echo "net.ipv6.conf.default.disable_ipv6 = 1" >> /etc/sysctl.conf
 RUN echo "net.ipv6.conf.lo.disable_ipv6 = 1" >> /etc/sysctl.conf
 
+EXPOSE 9866 9866 9864
 
-CMD service ssh start \
-  && bin/hdfs datanode \
-  && bin/hdfs dfs -chown -R dr.who:dr.who / \
-  && bash
+CMD bin/hdfs datanode && bin/hdfs dfs -chown -R dr.who:dr.who / && bin/hdfs dfs -chmod 777 && bash
 
 

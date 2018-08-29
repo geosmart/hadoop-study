@@ -1,30 +1,25 @@
 version: '2'
 
 services:
-  reverse_proxy:
-    image: traefik # The official Traefik docker image
-    command: --api --docker # Enables the web UI and tells Træfik to listen to docker
-    ports:
-      - "80:80"     # The HTTP port
-      - "8080:8080" # The Web UI (enabled by --api)
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    networks:
-      - hdfs
+  # reverse_proxy:
+  #   image: traefik # The official Traefik docker image
+  #   command: --api --docker # Enables the web UI and tells Træfik to listen to docker
+  #   ports:
+  #     - "80:80"     # The HTTP port
+  #     - "8080:8080" # The Web UI (enabled by --api)
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #   network_mode: host
 
   namenode:
     build: ./namenode
     ports:
       - 9871:9871
-      - 9870:9870 # web ui
+      - 9870:9870 # web ui and RPC
       - 8020:8020
-
-    networks:
-      - hdfs
+    network_mode: host
     labels:
-      - "traefik.frontend.rule=Host:namenode.docker.localhost"
-    depends_on:
-      - reverse_proxy
+      - "traefik.frontend.rule=Host:namenode.localhost"
     
   datanode:
     build: ./datanode
@@ -32,26 +27,19 @@ services:
       - 9867:9867
       - 9866:9866
       - 9865:9865
-      - 9864:9864 # web ui
+      - 9864:9864 # web ui and RPC
     depends_on: 
       - namenode
-    networks:
-      - hdfs
-    labels:
-      - "traefik.frontend.rule=Host:datanode1.docker.localhost"
+    # networks:
+    #   - hdfs
+    network_mode: host
 
-  ping:
-    image: alpine
-    command: ping namenode.docker.localhost
-    networks:
-      - hdfs
-    labels:
-      - "traefik.frontend.rule=Host:pinger.docker.localhost"
-    depends_on:
-      - reverse_proxy
+    # labels:
+    #   - "traefik.frontend.rule=Host:datanode.localhost"
 
 networks:
   hdfs:
+
 
 ## from older versions
 # Namenode ports: 50470 --> 9871, 50070 --> 9870, 8020 --> 9820
