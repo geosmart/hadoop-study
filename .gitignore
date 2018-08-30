@@ -1,0 +1,5 @@
+datanode/ssh
+
+namenode/ssh
+ssh/authorized_keys
+ssh/id_*
