@@ -1,7 +1,7 @@
 FROM ubuntu:xenial
 
 # Refresh package lists
-RUN apt-get update
+RUN apt-get update --fix-missing
 
 RUN apt install curl -y
 

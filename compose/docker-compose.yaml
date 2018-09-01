@@ -2,36 +2,50 @@ version: '2'
 
 services:
   namenode:
-    build: ./namenode
-    network_mode: host
-# http://localhost:9870
+    build: ./hdfs/namenode
+    networks:
+      - hdfs
+    ports:
+      - 9870:9870
 
   datanode:
-    build: ./datanode
+    build: ./hdfs/datanode
     depends_on: 
       - namenode
-    network_mode: host
-# http://localhost:9864
+    networks:
+      - hdfs
+    ports:
+      - 9864:9864
 
-#   yarn:
-#     build: ./yarn
-#     depends_on: 
-#       - namenode
-#     network_mode: host
-# # http://localhost:8088
-# # http://localhost:19888 job history
+
+
+  # yarn_resource_manager:
+  #   build: ./yarn/resource_manager
+  #   container_name: resourcemanager
+  #   depends_on: 
+  #     - namenode
+  #   ports:
+  #     - 8088:8088
+  #   networks:
+  #     - hdfs
 
   spark:
-    build: ./spark
+    build: ./yarn/spark
+    container_name: spark
     depends_on: 
       - namenode
-    network_mode: host
+    ports:
+      - 8088:8088
+    networks:
+      - hdfs
+
+
+  yarn_node_manager:
+    build: ./yarn/node_manager
+    depends_on: 
+      - namenode
+    networks:
+      - hdfs
 
 networks:
   hdfs:
-
-
-## from older versions
-# Namenode ports: 50470 --> 9871, 50070 --> 9870, 8020 --> 9820
-# Secondary NN ports: 50091 --> 9869, 50090 --> 9868
-# Datanode ports: 50020 --> 9867, 50010 --> 9866, 50475 --> 9865, 50075 --> 9864

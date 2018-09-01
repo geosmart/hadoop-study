@@ -1,7 +1,7 @@
 FROM ubuntu:xenial
 
 # Refresh package lists
-RUN apt-get update
+RUN apt-get update --fix-missing
 
 RUN apt install curl -y
 
@@ -22,22 +22,17 @@ ENV HDFS_DATANODE_USER root
 
 RUN echo "JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre" >> etc/hadoop/hadoop-env.sh 
 
-RUN apt-get install openssh-client openssh-server pdsh net-tools -y
-
+RUN apt-get install openssh-client openssh-server pdsh net-tools iputils-ping -y
 
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/jre
 
-RUN mkdir -p /home/root/Hadoop/DataNode
-
-COPY etc/hadoop/core-site.xml etc/hadoop/core-site.xml
-COPY etc/hadoop/hdfs-site.xml etc/hadoop/hdfs-site.xml
 
 RUN echo "net.ipv6.conf.all.disable_ipv6 = 1" >> /etc/sysctl.conf
 RUN echo "net.ipv6.conf.default.disable_ipv6 = 1" >> /etc/sysctl.conf
 RUN echo "net.ipv6.conf.lo.disable_ipv6 = 1" >> /etc/sysctl.conf
 
-EXPOSE 9866 9864
-
+COPY etc/hadoop/yarn-site.xml etc/hadoop/yarn-site.xml
 COPY entrypoint.sh entrypoint.sh
-ENTRYPOINT [ "./entrypoint.sh" , "bash" ]
 
+ENTRYPOINT [ "./entrypoint.sh" , "bash" ]
+# ENTRYPOINT [ "bash" ]

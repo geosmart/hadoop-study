@@ -12,6 +12,6 @@ echo "set dr.who owner from all /"
 bin/hdfs dfs -chown -R dr.who:dr.who /
 
 while :; do
-  sleep 5
-	echo "Isso será executado infinitamente até que seja pressionado [CTRL+C]."
+  sleep 10 
+  echo "Isso será executado infinitamente até que seja pressionado [CTRL+C]."
 done

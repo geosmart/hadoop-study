@@ -1,7 +1,7 @@
 FROM ubuntu:xenial
 
 # Refresh package lists
-RUN apt-get update
+RUN apt-get update --fix-missing
 
 RUN apt install curl wget net-tools default-jre python -y
 
@@ -32,4 +32,4 @@ COPY etc/hadoop/core-site.xml etc/hadoop/core-site.xml
 WORKDIR /opt/spark
 COPY entrypoint.sh entrypoint.sh
 
-ENTRYPOINT [ "bash" ]
+ENTRYPOINT [ "./entrypoint.sh" , "bash" ]

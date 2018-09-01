@@ -1,7 +1,7 @@
 FROM ubuntu:xenial
 
 # Refresh package lists
-RUN apt-get update
+RUN apt-get update --fix-missing
 
 RUN apt install curl -y
 
@@ -30,8 +30,6 @@ ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/jre
 RUN echo "net.ipv6.conf.all.disable_ipv6 = 1" >> /etc/sysctl.conf
 RUN echo "net.ipv6.conf.default.disable_ipv6 = 1" >> /etc/sysctl.conf
 RUN echo "net.ipv6.conf.lo.disable_ipv6 = 1" >> /etc/sysctl.conf
-
-EXPOSE 9870 9000
 
 COPY entrypoint.sh entrypoint.sh
 ENTRYPOINT [ "./entrypoint.sh" , "bash" ]
