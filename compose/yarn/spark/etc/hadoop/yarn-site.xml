@@ -16,6 +16,22 @@
     <name>yarn.nodemanager.disk-health-checker.enable</name>
     <value>false</value>
   </property>
+  <property>
+      <name>yarn.nodemanager.pmem-check-enabled</name>
+      <value>false</value>
+  </property>
+
+  <property>
+      <name>yarn.nodemanager.vmem-check-enabled</name>
+      <value>false</value>
+  </property>
+
 </configuration>
 
 
+
+
+<!-- 
+
+Neither spark.yarn.jars nor spark.yarn.archive is set, 
+falling back to uploading libraries under SPARK_HOME. -->

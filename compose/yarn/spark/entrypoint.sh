@@ -4,6 +4,8 @@ echo "start YARN resourcemanager"
 /opt/hadoop/bin/yarn --daemon start resourcemanager
 
 # echo "start YARN proxyserver"
+/opt/hadoop/bin/hdfs dfs -put spark-libs.jar /spark-jars/
+
 # /opt/hadoop/bin/yarn --daemon start proxyserver
 
 

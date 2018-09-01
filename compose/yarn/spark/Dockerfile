@@ -3,7 +3,7 @@ FROM ubuntu:xenial
 # Refresh package lists
 RUN apt-get update --fix-missing
 
-RUN apt install curl wget net-tools default-jre python -y
+RUN apt install curl wget net-tools default-jre default-jdk python -y
 
 WORKDIR /opt
 
@@ -30,6 +30,12 @@ RUN echo "net.ipv6.conf.lo.disable_ipv6 = 1" >> /etc/sysctl.conf
 COPY etc/hadoop/core-site.xml etc/hadoop/core-site.xml
 
 WORKDIR /opt/spark
+
+# distribute spark jars
+ENV SPARK_HOME /opt/spark
+RUN jar cv0f spark-libs.jar -C $SPARK_HOME/jars/ .
+COPY spark/conf/spark-defaults.conf /opt/spark/conf/spark-defaults.conf
+
 COPY entrypoint.sh entrypoint.sh
 
 ENTRYPOINT [ "./entrypoint.sh" , "bash" ]

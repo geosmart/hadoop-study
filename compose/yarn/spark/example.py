@@ -1,6 +1,6 @@
 from pyspark.sql import SparkSession
 
-sparkSession = SparkSession.builder.appName("example-pyspark-read-and-write").getOrCreate()
+
 
 data = [
   ('First', 1),
@@ -12,6 +12,6 @@ data = [
 
 df = sparkSession.createDataFrame(data)
 
-df.write.csv("hdfs://localhost:9000/user/hdfs/test/example.csv")
+df.write.csv("hdfs://namenode:9000/user/hdfs/test/example.csv")
 
 exit()
