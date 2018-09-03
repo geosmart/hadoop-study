@@ -1,0 +1,51 @@
+version: '2'
+services:
+  namenode:
+    image: hadoop-3:latest
+    networks:
+      - hadoop
+    ports:
+      - 9870:9870
+    command: namenode
+
+  datanode:
+    image: hadoop-3:latest
+    depends_on: 
+      - namenode
+    networks:
+      - hadoop
+    ports:
+      - 9864:9864
+    command: datanode
+
+
+  spark:
+    image: hadoop-3:latest
+    container_name: spark
+    depends_on: 
+      - datanode
+      - namenode
+    ports:
+      - 8088:8088
+    networks:
+      - hadoop
+    command: resourcemanager
+
+  nodemanager:
+    image: hadoop-3:latest
+    depends_on: 
+      - spark
+    networks:
+      - hadoop
+    ports:
+      - 8042:8042
+    command: nodemanager
+
+    # volumes:
+      # - node_manager_tmp:/tmp/
+      # - /tmp/:${LOCAL_DIR}/compose/yarn/node_manager/tmp/
+networks:
+  hadoop:
+
+volumes:
+  node_manager_tmp:
