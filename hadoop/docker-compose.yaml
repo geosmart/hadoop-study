@@ -5,7 +5,7 @@ services:
     networks:
       - hadoop
     ports:
-      - 9870:9870
+      - 9870:9870  # hdfs namenode ui
     command: namenode
 
   datanode:
@@ -15,7 +15,7 @@ services:
     networks:
       - hadoop
     ports:
-      - 9864:9864
+      - 9864:9864  # hdfs datanode ui
     command: datanode
 
 
@@ -26,7 +26,9 @@ services:
       - datanode
       - namenode
     ports:
-      - 8088:8088
+      - 8088:8088 # yarn resourcemanager ui
+      - 8081:8081 # spark worker ui
+      - 8080:8080 # spark master ui
     networks:
       - hadoop
     command: resourcemanager
@@ -38,7 +40,7 @@ services:
     networks:
       - hadoop
     ports:
-      - 8042:8042
+      - 8042:8042 # yarn nodemanager ui
     command: nodemanager
 
     # volumes:

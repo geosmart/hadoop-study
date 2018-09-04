@@ -44,6 +44,12 @@ if [ "$1" = 'resourcemanager' ]; then
   echo "start YARN resourcemanager"
   /opt/hadoop/bin/yarn --daemon start resourcemanager
 
+  echo "start SPARK master"
+  /opt/spark/sbin/start-master.sh
+  
+  echo "start SPARK slave"
+  /opt/spark/sbin/start-slave.sh spark:7077
+
 
   echo "disable safe mode in hdfs"
   /opt/hadoop/bin/hadoop dfsadmin -safemode leave
@@ -54,7 +60,35 @@ if [ "$1" = 'resourcemanager' ]; then
   # echo "start YARN proxyserver"
   # /opt/hadoop/bin/yarn --daemon start proxyserver
 
+  echo "send data to hdfs"
+  /opt/hadoop/bin/hdfs dfs -mkdir /data
+  /opt/hadoop/bin/hdfs dfs -put /data/* /data/
+
   # echo "init spark interactive"
+  # using spark cluster 
+  # SPARK_HOME=/opt/spark/ HADOOP_CONF_DIR=/opt/hadoop/etc/hadoop/ bin/pyspark --master spark://spark:7077
+
+  # using yarn cluster
   # SPARK_HOME=/opt/spark/ HADOOP_CONF_DIR=/opt/hadoop/etc/hadoop/ bin/pyspark --master yarn
   tail -f $(find /opt/hadoop/logs/*.log)
 fi
+
+# if [ "$1" = 'spark' ]; then
+
+#   echo "start YARN resourcemanager"
+#   /opt/hadoop/bin/yarn --daemon start resourcemanager
+
+
+#   echo "disable safe mode in hdfs"
+#   /opt/hadoop/bin/hadoop dfsadmin -safemode leave
+
+#   echo "distribute spark jars in hdfs"
+#   /opt/hadoop/bin/hdfs dfs -put spark-libs.jar /spark-jars.jar
+  
+#   # echo "start YARN proxyserver"
+#   # /opt/hadoop/bin/yarn --daemon start proxyserver
+
+#   # echo "init spark interactive"
+#   # SPARK_HOME=/opt/spark/ HADOOP_CONF_DIR=/opt/hadoop/etc/hadoop/ bin/pyspark --master yarn
+#   tail -f $(find /opt/hadoop/logs/*.log)
+# fi

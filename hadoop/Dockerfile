@@ -41,8 +41,9 @@ ENV SPARK_HOME /opt/spark
 RUN jar cv0f spark-libs.jar -C $SPARK_HOME/jars/ .
 COPY spark/conf/spark-defaults.conf /opt/spark/conf/spark-defaults.conf
 
-
+COPY data/ /data/ 
 COPY entrypoint.sh entrypoint.sh
+COPY pyspark-examples/ /pyspark-examples/
 
 EXPOSE 9864 8088 9870 8042
 
