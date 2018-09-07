@@ -18,7 +18,6 @@ services:
       - 9864:9864  # hdfs datanode ui
     command: datanode
 
-
   spark:
     image: hadoop-3:latest
     container_name: spark

@@ -14,11 +14,11 @@ $ docker build -t hadoop-3 hadoop/
 
 
 # 2) up docker-compose
-```
+```bash
 $ docker-compose up
 ```
 
 # 3) enter in spark docker
-```
+```bash
 $ docker exec -it spark bash
 ```

@@ -66,29 +66,17 @@ if [ "$1" = 'resourcemanager' ]; then
 
   # echo "init spark interactive"
   # using spark cluster 
-  # SPARK_HOME=/opt/spark/ HADOOP_CONF_DIR=/opt/hadoop/etc/hadoop/ bin/pyspark --master spark://spark:7077
+  # bin/pyspark --master spark://spark:7077
 
   # using yarn cluster
-  # SPARK_HOME=/opt/spark/ HADOOP_CONF_DIR=/opt/hadoop/etc/hadoop/ bin/pyspark --master yarn
+  # bin/pyspark --master yarn
   tail -f $(find /opt/hadoop/logs/*.log)
 fi
 
-# if [ "$1" = 'spark' ]; then
-
-#   echo "start YARN resourcemanager"
-#   /opt/hadoop/bin/yarn --daemon start resourcemanager
-
-
-#   echo "disable safe mode in hdfs"
-#   /opt/hadoop/bin/hadoop dfsadmin -safemode leave
-
-#   echo "distribute spark jars in hdfs"
-#   /opt/hadoop/bin/hdfs dfs -put spark-libs.jar /spark-jars.jar
-  
-#   # echo "start YARN proxyserver"
-#   # /opt/hadoop/bin/yarn --daemon start proxyserver
-
-#   # echo "init spark interactive"
-#   # SPARK_HOME=/opt/spark/ HADOOP_CONF_DIR=/opt/hadoop/etc/hadoop/ bin/pyspark --master yarn
-#   tail -f $(find /opt/hadoop/logs/*.log)
-# fi
+# example of submit spark
+# spark-submit \
+# --executor-memory 20G \
+# --total-executor-cores 100 \
+# --master yarn \
+# --deploy-mode cluster \
+# /pyspark-examples/count_lines.py argument1

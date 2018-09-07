@@ -21,10 +21,7 @@ RUN mv spark-2.3.1-bin-hadoop2.7 spark
 # Setup
 WORKDIR /opt/hadoop
 
-ENV HDFS_DATANODE_USER root
 
-ENV JAVA_HOME /usr/lib/jvm/default-java/jre
-RUN echo "JAVA_HOME=$JAVA_HOME" >> etc/hadoop/hadoop-env.sh 
 
 RUN mkdir -p /home/root/Hadoop/DataNode
 
@@ -36,8 +33,16 @@ RUN echo "net.ipv6.conf.all.disable_ipv6 = 1" >> /etc/sysctl.conf
 RUN echo "net.ipv6.conf.default.disable_ipv6 = 1" >> /etc/sysctl.conf
 RUN echo "net.ipv6.conf.lo.disable_ipv6 = 1" >> /etc/sysctl.conf
 
-
+# env vars
+ENV HDFS_DATANODE_USER root
 ENV SPARK_HOME /opt/spark
+ENV HADOOP_HOME /opt/hadoop
+ENV HADOOP_CONF_DIR /opt/hadoop/etc/hadoop/
+ENV JAVA_HOME /usr/lib/jvm/default-java/jre
+ENV PATH $PATH:$SPARK_HOME/bin/:$HADOOP_HOME/bin/
+
+RUN echo "JAVA_HOME=$JAVA_HOME" >> etc/hadoop/hadoop-env.sh 
+
 RUN jar cv0f spark-libs.jar -C $SPARK_HOME/jars/ .
 COPY spark/conf/spark-defaults.conf /opt/spark/conf/spark-defaults.conf
 
