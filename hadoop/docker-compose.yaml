@@ -18,16 +18,14 @@ services:
       - 9864:9864  # hdfs datanode ui
     command: datanode
 
-  spark:
+  resourcemanager:
     image: hadoop-3:latest
-    container_name: spark
+    container_name: resourcemanager
     depends_on: 
       - datanode
       - namenode
     ports:
       - 8088:8088 # yarn resourcemanager ui
-      - 8081:8081 # spark worker ui
-      - 8080:8080 # spark master ui
     networks:
       - hadoop
     command: resourcemanager
@@ -35,16 +33,27 @@ services:
   nodemanager:
     image: hadoop-3:latest
     depends_on: 
-      - spark
+      - resourcemanager
     networks:
       - hadoop
     ports:
       - 8042:8042 # yarn nodemanager ui
     command: nodemanager
+  
+  spark:
+    image: hadoop-3:latest
+    container_name: spark
+    depends_on: 
+      - resourcemanager
+      - namenode
+      - datanode
+    ports: # only if use SPARK own resource manager
+      - 8081:8081 # spark worker ui
+      - 8080:8080 # spark master ui
+    networks:
+      - hadoop
+    command: spark rdd/count_lines.py
 
-    # volumes:
-      # - node_manager_tmp:/tmp/
-      # - /tmp/:${LOCAL_DIR}/compose/yarn/node_manager/tmp/
 networks:
   hadoop:
 
