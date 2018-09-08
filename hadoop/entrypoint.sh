@@ -27,8 +27,6 @@ if [ "$1" = 'namenode' ]; then
   tail -f $(find logs/*.log)
 fi
 
-
-
 if [ "$1" = 'nodemanager' ]; then
 
   echo "start YARN nodemanager"
@@ -47,8 +45,6 @@ if [ "$1" = 'resourcemanager' ]; then
   echo "disable safe mode in hdfs"
   hadoop dfsadmin -safemode leave
 
-
-  
   # echo "start YARN proxyserver"
   # /opt/hadoop/bin/yarn --daemon start proxyserver
 
@@ -87,4 +83,16 @@ if [ "$1" = 'spark' ]; then
     --deploy-mode cluster \
     /pyspark-examples/$2 $3
 
+fi
+
+if [ "$1" = 'hive' ]; then
+  hdfs dfs -mkdir       /tmp
+  hdfs dfs -mkdir       /user/hive/warehouse
+  hdfs dfs -chmod g+w   /tmp
+  hdfs dfs -chmod g+w   /user/hive/warehouse
+  # https://cwiki.apache.org/confluence/display/Hive/Hive+Schema+Tool
+  schematool -dbType derby -initSchema
+  hive --service hiveserver2
+  # create database world_cups;
+  # beeline -u jdbc:hive2://localhost:10000/default
 fi

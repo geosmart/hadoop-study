@@ -2,6 +2,7 @@ version: '2'
 services:
   namenode:
     image: hadoop-3:latest
+    container_name: namenode
     networks:
       - hadoop
     ports:
@@ -10,6 +11,7 @@ services:
 
   datanode:
     image: hadoop-3:latest
+    container_name: datanode
     depends_on: 
       - namenode
     networks:
@@ -32,6 +34,7 @@ services:
 
   nodemanager:
     image: hadoop-3:latest
+    container_name: nodemanager
     depends_on: 
       - resourcemanager
     networks:
@@ -53,6 +56,20 @@ services:
     networks:
       - hadoop
     command: spark rdd/count_lines.py
+
+  hive:
+    image: hadoop-3:latest
+    container_name: hive
+    depends_on: 
+      - resourcemanager
+      - namenode
+      - datanode
+    ports:
+      - 10002:10002
+    networks:
+      - hadoop
+    command: hive
+
 
 networks:
   hadoop:

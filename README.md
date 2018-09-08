@@ -1,7 +1,19 @@
 hadoop 3 ecosystem
 ===
+# Table of Contents
+* [Start](start)
+* hdfs
+  - namenode
+  - datanode
+* yarn
+  - nodemanager
+  - resourcemanager
+* spark
+* hive
 
-# 1) create hadoop image
+
+# Start
+## 1) create hadoop image
 
 ```bash
 $ docker build -t hadoop-3 hadoop/
@@ -13,12 +25,30 @@ $ docker build -t hadoop-3 hadoop/
 **obs2:** The data example are from https://www.kaggle.com/abecklas/fifa-world-cup/data
 
 
-# 2) up docker-compose
+## 2) up docker-compose
 ```bash
 $ docker-compose up
 ```
 
-# 3) enter in spark docker
+## 3) enter in spark docker
 ```bash
 $ docker exec -it spark bash
 ```
+
+## 4) enter in hive
+```bash
+$ docker run -it  --network hadoop_hadoop hadoop-3 hive
+```
+
+
+
+# HDFS
+
+# YARN
+
+# SPARK
+
+# HIVE
+
+
+
