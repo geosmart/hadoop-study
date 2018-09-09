@@ -43,6 +43,7 @@ $ docker run -it  --network hadoop_hadoop hadoop-3 hive
 
 
 # HDFS
+hdfs is the hadoop distributed file system
 
 # YARN
 

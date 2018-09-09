@@ -86,6 +86,9 @@ if [ "$1" = 'spark' ]; then
 fi
 
 if [ "$1" = 'hive' ]; then
+  
+  sleep 15
+ 
   hdfs dfs -mkdir       /tmp
   hdfs dfs -mkdir       /user/hive/warehouse
   hdfs dfs -chmod g+w   /tmp
@@ -94,5 +97,6 @@ if [ "$1" = 'hive' ]; then
   schematool -dbType derby -initSchema
   hive --service hiveserver2
   # create database world_cups;
-  # beeline -u jdbc:hive2://localhost:10000/default
+  # beeline -u jdbc:hive2://localhost:10000/default --hiveconf hive.execution.engine=spark 
+
 fi

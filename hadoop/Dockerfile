@@ -24,7 +24,7 @@ RUN mv apache-hive-3.1.0-bin hive
 
 
 # copy configs
-COPY hive/hive-site.xml         /opt/hive/conf/yarn-site.xml
+COPY hive/hive-site.xml         /opt/hive/conf/hive-site.xml
 COPY etc/hadoop/core-site.xml   /opt/hadoop/etc/hadoop/core-site.xml
 COPY etc/hadoop/hdfs-site.xml   /opt/hadoop/etc/hadoop/hdfs-site.xml
 COPY etc/hadoop/yarn-site.xml   /opt/hadoop/etc/hadoop/yarn-site.xml

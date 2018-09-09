@@ -3,4 +3,13 @@
 
 <configuration>
 
+  <property>
+    <name>spark.yarn.jar</name>
+    <value>hdfs://namenode:8020/spark-jars.jar</value>
+  </property>
+
+  <property>
+    <name>hive.execution.engine</name>
+    <value>spark</value>
+  </property>
 </configuration>
