@@ -19,7 +19,7 @@ if [ "$1" = 'namenode' ]; then
   sleep 2
 
   echo "set 777 permissions to /"
-  hdfs dfs -chmod 777 /
+  hdfs dfs -chmod -R 777 /
 
   echo "set dr.who owner from all /"
   hdfs dfs -chown -R dr.who:dr.who /

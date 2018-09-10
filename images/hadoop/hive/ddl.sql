@@ -15,3 +15,6 @@ ROW FORMAT DELIMITED
 FIELDS TERMINATED BY ','
 STORED AS TEXTFILE
 location '/data/hive/cups';
+
+INSERT INTO table_name (Year, Country, Winner,
+VALUES ('3000', 'Brasil', 'Brasil',);

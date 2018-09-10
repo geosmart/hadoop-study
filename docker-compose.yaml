@@ -70,6 +70,16 @@ services:
       - hadoop
     command: hive
 
+  hue:
+    image: hue:latest
+    container_name: hue
+    depends_on:
+      - hive
+    ports:
+      - 8888:8888
+    networks:
+      - hadoop
+    command: ./build/env/bin/hue runserver_plus 0.0.0.0:8888
 
 networks:
   hadoop:
