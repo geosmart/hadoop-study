@@ -62,6 +62,12 @@ if [ "$1" = 'spark' ]; then
   hdfs dfs -mkdir /data
   hdfs dfs -put /data/* /data/
 
+  # livy has developed initialy by HUE
+  echo "start livy Server"
+  livy-server start
+  
+  tail -f /opt/livy/logs/livy--server.out 
+
   # echo "start SPARK master"
   # /opt/spark/sbin/start-master.sh
   
@@ -76,12 +82,12 @@ if [ "$1" = 'spark' ]; then
   # pyspark --master yarn
 
   # example of submit spark
-  spark-submit \
-    --executor-memory 2G \
-    --total-executor-cores 1 \
-    --master yarn \
-    --deploy-mode cluster \
-    /pyspark-examples/$2 $3
+  # spark-submit \
+  #   --executor-memory 2G \
+  #   --total-executor-cores 1 \
+  #   --master yarn \
+  #   --deploy-mode cluster \
+  #   /pyspark-examples/$2 $3
 
 fi
 

@@ -20,4 +20,7 @@ if __name__ == "__main__":
 
   log.info(total_len)
 
+  rdd = sc.parallelize([str(total_len)])
+  rdd.saveAsTextFile('hdfs://data/report.txt")
+
   print total_len
