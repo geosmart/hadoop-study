@@ -33,6 +33,7 @@ COPY etc/hadoop/core-site.xml     /opt/hadoop/etc/hadoop/core-site.xml
 COPY etc/hadoop/hdfs-site.xml     /opt/hadoop/etc/hadoop/hdfs-site.xml
 COPY etc/hadoop/yarn-site.xml     /opt/hadoop/etc/hadoop/yarn-site.xml
 COPY etc/hadoop/httpfs-site.xml   /opt/hadoop/etc/hadoop/httpfs-site.xml
+COPY livy/livy.conf               /opt/livy/conf/livy.conf
 
 # Setup
 WORKDIR /opt/hadoop

@@ -5,15 +5,17 @@ starting on haddop 3.1 and going on the newest versions.
 
 
 # Table of Contents
-* [Start](start)
-* [hdfs](hdfs)
-  - [namenode](namenode)
-  - [datanode](datanode)
-* [yarn](yarn)
-  - [resourcemanager](resource-manager)
-  - [nodemanager](node-manager)
-* [spark](spark)
-* [hive](hive)
+* [Start](#start)
+* [hdfs](#hdfs)
+  - [namenode](#namenode)
+  - [datanode](#datanode)
+* [yarn](#yarn)
+  - [resourcemanager](#resource-manager)
+  - [nodemanager](#node-manager)
+* [spark](#spark)
+  - [livy](#livy)
+  - [oozie](#oozie)
+* [hive](#hive)
 
 
 # Start
@@ -133,7 +135,20 @@ $ spark-submit \
     --deploy-mode cluster \
     /pyspark-job.py argument1
 ```
+
+## Livy
+TODO - explain about livy 
+## Oozie
+TODO - install oozie in cluester and explain
 # HIVE
+hive is a SQL engine atop jobs as mapr or spark.
+```bash
+# define a metastore engine(pg, mysql, derby) to store your metadatas and init it (derby in this case)
+$ schematool -dbType derby -initSchema
+
+# init hive server
+$ hive --service hiveserver2
+```
 
 
 # HUE
@@ -144,4 +159,15 @@ init hue web service
 $ ./build/env/bin/hue runserver_plus 0.0.0.0:8888
 ```
 
-docker run -it --network hadoop3study_hadoop -p 8888:8888 hue:latest ./build/env/bin/hue runserver_plus 0.0.0.0:8888
+In spark context
+```python
+# create Spark context with Spark configuration
+
+rdd = sc.textFile("/data/WorldCups.csv")
+
+lines_len = rdd.map(lambda line: len(line))
+total_len = lines_len.reduce(lambda a, b: a + b)
+
+rdd = sc.parallelize([str(total_len)])
+rdd.saveAsTextFile('/data/report.txt')
+```

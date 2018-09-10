@@ -53,6 +53,7 @@ services:
     ports: # only if use SPARK own resource manager
       - 8081:8081 # spark worker ui
       - 8080:8080 # spark master ui
+      - 8998:8998 # livy localhost:8998/ui
     networks:
       - hadoop
     command: spark rdd/count_lines.py
