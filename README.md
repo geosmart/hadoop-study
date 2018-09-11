@@ -6,16 +6,19 @@ starting on haddop 3.1 and going on the newest versions.
 
 # Table of Contents
 * [Start](#start)
-* [hdfs](#hdfs)
-  - [namenode](#namenode)
-  - [datanode](#datanode)
-* [yarn](#yarn)
-  - [resourcemanager](#resource-manager)
-  - [nodemanager](#node-manager)
-* [spark](#spark)
-  - [livy](#livy)
-  - [oozie](#oozie)
-* [hive](#hive)
+* [Components](#components)
+  - [Hdfs](#hdfs)
+    * [Namenode](#namenode)
+    * [Datanode](#datanode)
+  - [Yarn](#yarn)
+    * [Resourcemanager](#resource-manager)
+    * [Nodemanager](#node-manager)
+  - [Spark](#spark)
+    * [Livy](#livy)
+    * [Oozie](#oozie)
+  - [Hive](#hive)
+* [Roadmap](#roadmap)
+* [Contributors](#contributors)
 
 
 # Start
@@ -24,45 +27,38 @@ according the command pass to entrypoint start one or another service.
 This save resources and build time in the final.
 
 
-## 1) create images
+## 1) Images
 
-hadoop image
 ```bash
+# hadoop image
 $ docker build -t hadoop-3 images/hadoop/
-```
 
-hue image
-```bash
+# hue image
 $ docker build -t hue images/hue/
 ```
 
-**obs1:** The download parts are the more slow, if this is a problem to you if you try refac this image, i recommend to you download the .tar files and use COPY in Dockerfile else download
+ - The download steps are the more slow, if this is a problem for you try refac this image, i recommend to you download the .tar files and use `COPY` in Dockerfile else download
 
 
-**obs2:** The data example are from https://www.kaggle.com/abecklas/fifa-world-cup/data
+ - The data examples are from https://www.kaggle.com/abecklas/fifa-world-cup/data
 
 
-## 2) up docker-compose
+## 2) Compose
 ```bash
 $ docker-compose up
 ```
 
-## 3) enter in spark docker
-```bash
-$ docker exec -it spark bash
-```
+## 3) Open Hue
+Open [http://localhost:8888](http://localhost:8888)
+in your favorite web browser
 
-## 4) enter in hive
-```bash
-$ docker exec -it --network hadoop-3 hive
-```
+# Components
 
+## HDFS
+**hdfs** is the hadoop distributed file system, has divided primarily into 2 main components, that acts like **master** & **slaves**
 
-# HDFS
-hdfs is the hadoop distributed file system, has divided primarily into 2 main components, that acts like master/slaves
-
-## namenode
-Is a master node, that hold metadata, about data localization, permissions, and locations os data blocks etc
+### Namenode
+Is a master node, that hold metadata, about data localization, permissions, and locations of data blocks etc
 
 ```bash
 # format metadata 
@@ -71,47 +67,45 @@ $ hdfs namenode -format -nonInteractive
 # start namenode
 $ hdfs --daemon start namenode
 
-# set permissions to all users in root folter
+# set permissions to all users in root folder
 $ hdfs dfs -chmod 777 /
 
 # TODO - ckeck this need
 $ hdfs dfs -chown -R dr.who:dr.who /
 ```
 
-## datanode
-Is a slave node, thad holds data, splited in blocks and send herthbeats to namonode, to mantain namenode with updated infos.
+### Datanode
+Is a slave node, that holds data, splited in blocks and send heartbeats to namenode, to keep namenode with updated infos.
 
 ```bash
 # start datanode
 $ hdfs --daemon start namenode
 ```
 
-# YARN
-yarn is the resource manager, has divided in 2 main components to, that acts like master/slaves
+## Yarn
+yarn is the resource manager, has divided in 2 main components to, that acts like **master** & **slaves**
 
-## resorce manager
-The master node, holds info abount total resources of cluster(memory and cpus) total, useds,
-and used jobs.
+### resorce manager
+The master node, holds info about total resources of cluster(memory and cpus): total, used, and used by jobs.
 
 ```bash
 # start resourcemanager
 $ yarn --daemon start resourcemanager
 ```
 
-## node manager
-The node manager, sends info abount your resources to resource manager.
+### node manager
+The node manager, sends info about your resources to resource manager.
 
 ```bash
 # start nodemanager
 $ yarn --daemon start nodemanager
 ```
 
-# SPARK
-Spart is a alternative to Hadoop mapReduce layer, but uses memory else disk.
+## Spark
+**Spark** is a alternative to Hadoop mapReduce layer, but uses memory else disk.
 
 
-To works, need distribute your dependencies across
-system by hdfs
+To works, need distribute your dependencies across system by hdfs.
 
 ```bash
 # make a jar with spark jars
@@ -121,12 +115,12 @@ jar cv0f spark-libs.jar -C $SPARK_HOME/jars/ .
 $ hdfs dfs -put spark-libs.jar /spark-jars.jar
 ```
 
-Start a interactive shell of spark
+Start a interactive shell
 ```bash
-$ pyspark --master yarn
+$ pyspark --master yarn --deploy-mode cluster
 ```
 
-or submit a job to be run
+or submit a job
 ```bash
 $ spark-submit \
     --executor-memory 1G \
@@ -136,12 +130,16 @@ $ spark-submit \
     /pyspark-job.py argument1
 ```
 
-## Livy
-TODO - explain about livy 
-## Oozie
+### Livy
+Originally as part of **Hue** project **Lyve**
+has webservice that provide a interactive spark session by rest API.
+In a way that can be integrated with other UI, to helps the development of spark jobs.
+
+### Oozie
 TODO - install oozie in cluester and explain
-# HIVE
-hive is a SQL engine atop jobs as mapr or spark.
+
+## Hive
+**hive** is a SQL engine atop jobs as mapr or spark.
 ```bash
 # define a metastore engine(pg, mysql, derby) to store your metadatas and init it (derby in this case)
 $ schematool -dbType derby -initSchema
@@ -151,23 +149,22 @@ $ hive --service hiveserver2
 ```
 
 
-# HUE
-Hue is a django web service UI to manage cluster and hadoop ecosystem services
+# Hue
+**Hue** is a Django based web service UI to manage cluster and hadoop ecosystem services.
 
 init hue web service
 ```bash
 $ ./build/env/bin/hue runserver_plus 0.0.0.0:8888
 ```
 
-In spark context
-```python
-# create Spark context with Spark configuration
+# Roadmap
 
-rdd = sc.textFile("/data/WorldCups.csv")
+* Install Oozie and integrates with **Hue**
+* Config **Hue** to not show unused services
+* Use a secondary namenode
+* Integrate Build of images with docker-compose (if possible)
 
-lines_len = rdd.map(lambda line: len(line))
-total_len = lines_len.reduce(lambda a, b: a + b)
+# Contributors
+- Luiz Carlos Zamboni: luizamboni2002@hotmail.com
 
-rdd = sc.parallelize([str(total_len)])
-rdd.saveAsTextFile('/data/report.txt')
-```
+And a special thanks for my lovely companion: **Gerusa Fernandes** for patience in long hours of study.
