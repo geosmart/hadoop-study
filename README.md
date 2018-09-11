@@ -160,7 +160,7 @@ $ ./build/env/bin/hue runserver_plus 0.0.0.0:8888
 # Roadmap
 
 * Install Oozie and integrates with **Hue**
-* Config **Hue** to not show unused services
+* ~Config **Hue** to not show unused services~
 * Use a secondary namenode
 * Integrate Build of images with docker-compose (if possible)
 
