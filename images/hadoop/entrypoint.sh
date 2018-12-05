@@ -53,14 +53,34 @@ fi
 
 if [ "$1" = 'spark' ]; then
 
-  sleep 10
-
   echo "distribute spark jars in hdfs"
-  hdfs dfs -put spark-libs.jar /spark-jars.jar
 
-  echo "send data to hdfs"
-  hdfs dfs -mkdir /data
-  hdfs dfs -put /data/* /data/
+  if hdfs dfs -test -e /spark-jars.jar; then
+    echo "/spark-jars.jar exists on HDFS"
+  else
+    { 
+      hdfs dfs -put -f spark-libs.jar /spark-jars.jar;
+    } || {
+      echo "send spark-libs.jar error" && exit 1; 
+    }
+  fi
+
+  # exec hdfs dfs -put spark-libs.jar /spark-jars.jar
+
+  echo "make dir /data in hdfs"
+  if hdfs dfs -test -d /data/; then
+    echo "/data exists on HDFS"
+  else
+    { hdfs dfs -mkdir -p /data; } || { echo "make dir /data error" && exit 1; }
+  fi
+
+  # assume that if one of files existes all them exists too
+  if hdfs dfs -test -e /data/WorldCups.csv; then
+    echo "/data/* exists on HDFS"
+  else
+    { hdfs dfs -put /data/* /data/; } || { echo "send data error" && exit 1; }
+  fi
+
 
   # livy has developed initialy by HUE
   echo "start livy Server"
@@ -88,7 +108,6 @@ if [ "$1" = 'spark' ]; then
   #   --master yarn \
   #   --deploy-mode cluster \
   #   /pyspark-examples/$2 $3
-
 fi
 
 if [ "$1" = 'hive' ]; then

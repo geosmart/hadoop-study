@@ -8,6 +8,7 @@ services:
     ports:
       - 9870:9870  # hdfs namenode ui
     command: namenode
+    restart: always
 
   datanode:
     image: hadoop-3:latest
@@ -19,6 +20,7 @@ services:
     ports:
       - 9864:9864  # hdfs datanode ui
     command: datanode
+    restart: always
 
   resourcemanager:
     image: hadoop-3:latest
@@ -31,6 +33,7 @@ services:
     networks:
       - hadoop
     command: resourcemanager
+    restart: always
 
   nodemanager:
     image: hadoop-3:latest
@@ -42,7 +45,8 @@ services:
     ports:
       - 8042:8042 # yarn nodemanager ui
     command: nodemanager
-  
+    restart: always
+
   spark:
     image: hadoop-3:latest
     container_name: spark
@@ -57,6 +61,7 @@ services:
     networks:
       - hadoop
     command: spark rdd/count_lines.py
+    restart: always
 
   hive:
     image: hadoop-3:latest
@@ -81,6 +86,7 @@ services:
     networks:
       - hadoop
     command: ./build/env/bin/hue runserver_plus 0.0.0.0:8888
+    restart: always
 
 networks:
   hadoop:
