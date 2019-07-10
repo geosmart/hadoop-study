@@ -76,6 +76,7 @@ services:
       - ./data/world-cups/:/data/
       - ./spark/conf/spark-defaults.conf:/opt/spark/conf/spark-defaults.conf
       - ./hadoop/entrypoint.sh:/opt/hadoop/entrypoint.sh
+      - ./hadoop/livy/livy.conf:/opt/livy/conf/livy.conf
 
   solr:
     image: solr:8-slim
