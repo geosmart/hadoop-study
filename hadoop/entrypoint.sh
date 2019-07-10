@@ -92,17 +92,19 @@ if [ "$1" = 'spark' ]; then
   fi
 
 
+
+
+  echo "start SPARK master"
+  /opt/spark/sbin/start-master.sh
+  
+  echo "start SPARK slave"
+  /opt/spark/sbin/start-slave.sh spark:7077
+
   # livy has developed initialy by HUE
   echo "start livy Server"
   livy-server start
   
   tail -f /opt/livy/logs/livy--server.out 
-
-  # echo "start SPARK master"
-  # /opt/spark/sbin/start-master.sh
-  
-  # echo "start SPARK slave"
-  # /opt/spark/sbin/start-slave.sh spark:7077
 
   # echo "init spark interactive"
   # using spark cluster 

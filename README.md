@@ -47,8 +47,20 @@ $ docker-compose up
 ```
 
 ## 3) Open Hue
-Open [http://localhost:8888](http://localhost:8888)
+Open 
+[Hue](http://localhost:8888)
 in your favorite web browser
+
+other UI
+
+* [Hive](localhost:10002)
+* [Hdfs - Namenode](localhost:9870)
+* [Yarn - Resource Manager](localhost:8088)
+* [Spark - Worker](localhost:8081)
+* [Spark - Master](localhost:8080)
+* [Spark - Livy](localhost:8998/ui)
+
+
 
 # Components
 

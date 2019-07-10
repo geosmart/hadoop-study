@@ -14,8 +14,8 @@ RUN curl -L http://ftp.unicamp.br/pub/apache/hadoop/common/hadoop-3.1.1/hadoop-3
 RUN mv hadoop-3.1.1 hadoop
 
 # spark
-RUN curl -L http://ftp.unicamp.br/pub/apache/spark/spark-2.3.1/spark-2.3.1-bin-hadoop2.7.tgz -o - | tar -xzf -
-RUN mv spark-2.3.1-bin-hadoop2.7 spark
+RUN curl -L http://ftp.unicamp.br/pub/apache/spark/spark-2.4.3/spark-2.4.3-bin-hadoop2.7.tgz -o - | tar -xzf -
+RUN mv spark-2.4.3-bin-hadoop2.7 spark
 
 # livy (spark rest server)
 RUN curl http://ftp.unicamp.br/pub/apache/incubator/livy/0.5.0-incubating/livy-0.5.0-incubating-bin.zip -o livy-0.5.0-incubating-bin.zip
