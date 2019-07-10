@@ -1,3 +1,4 @@
+/* create from hdfs file */
 CREATE EXTERNAL TABLE IF NOT EXISTS world_cups(
     Year CHAR(4),
     Country CHAR(20),
@@ -16,5 +17,6 @@ FIELDS TERMINATED BY ','
 STORED AS TEXTFILE
 location '/data/hive/cups';
 
+-- insert in data
 INSERT INTO table_name (Year, Country, Winner,
 VALUES ('3000', 'Brasil', 'Brasil',);

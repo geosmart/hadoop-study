@@ -26,4 +26,9 @@
     <name>dfs.replication</name>
     <value>1</value>
   </property>
+
+  <property>
+    <name>dfs.datanode.hostname</name>
+    <value>0.0.0.0</value>
+  </property>
 </configuration>

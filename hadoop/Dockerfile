@@ -51,7 +51,7 @@ ENV HDFS_DATANODE_USER  root
 ENV SPARK_HOME          /opt/spark
 ENV LIVY_HOME           /opt/livy
 ENV HADOOP_HOME         /opt/hadoop
-ENV HADOOP_CONF_DIR     /opt/hadoop/etc/hadoop/
+ENV HADOOP_CONF_DIR     /opt/hadoop/etc/hadoop
 ENV JAVA_HOME           /usr/lib/jvm/default-java/jre
 ENV HIVE_HOME           /opt/hive
 
@@ -61,14 +61,7 @@ ENV PATH $PATH:$SPARK_HOME/bin/:$HADOOP_HOME/bin/:$HIVE_HOME/bin/:$LIVY_HOME/bin
 RUN echo "JAVA_HOME=$JAVA_HOME" >> etc/hadoop/hadoop-env.sh 
 
 RUN jar cv0f spark-libs.jar -C $SPARK_HOME/jars/ .
-COPY spark/conf/spark-defaults.conf /opt/spark/conf/spark-defaults.conf
 
-COPY data/ /data/ 
 COPY entrypoint.sh entrypoint.sh
-COPY pyspark-examples/ /pyspark-examples/
 
-
-ENTRYPOINT [ "./entrypoint.sh" ]
-
-# ENTRYPOINT [ "bash" ]
-
+CMD [ "./entrypoint.sh" ]

@@ -7,9 +7,12 @@ services:
       - hadoop
     ports:
       - 9870:9870  # hdfs namenode ui
-    command: namenode
-    restart: always
-
+    command: ./entrypoint.sh namenode
+    restart: unless-stopped
+    volumes:
+      - ./hadoop/etc/hadoop/hdfs-site.xml:/templates/hdfs-site.xml
+      - ./hadoop/entrypoint.sh:/opt/hadoop/entrypoint.sh
+ 
   datanode:
     image: hadoop-3:latest
     container_name: datanode
@@ -17,10 +20,11 @@ services:
       - namenode
     networks:
       - hadoop
-    ports:
-      - 9864:9864  # hdfs datanode ui
-    command: datanode
-    restart: always
+    command: ./entrypoint.sh datanode
+    restart: unless-stopped
+    volumes:
+      - ./hadoop/etc/hadoop/hdfs-site.xml:/templates/hdfs-site.xml
+      - ./hadoop/entrypoint.sh:/opt/hadoop/entrypoint.sh
 
   resourcemanager:
     image: hadoop-3:latest
@@ -32,8 +36,11 @@ services:
       - 8088:8088 # yarn resourcemanager ui
     networks:
       - hadoop
-    command: resourcemanager
-    restart: always
+    command:  ./entrypoint.sh resourcemanager
+    restart: unless-stopped
+    volumes:
+      - ./hadoop/etc/hadoop/yarn-site.xml:/templates/yarn-site.xml
+      - ./hadoop/entrypoint.sh:/opt/hadoop/entrypoint.sh
 
   nodemanager:
     image: hadoop-3:latest
@@ -42,10 +49,13 @@ services:
       - resourcemanager
     networks:
       - hadoop
-    ports:
-      - 8042:8042 # yarn nodemanager ui
-    command: nodemanager
-    restart: always
+    # ports:
+    #   - 8042:8042 # yarn nodemanager ui
+    command:  ./entrypoint.sh nodemanager
+    restart: unless-stopped
+    volumes:
+      - ./hadoop/etc/hadoop/yarn-site.xml:/templates/yarn-site.xml
+      - ./hadoop/entrypoint.sh:/opt/hadoop/entrypoint.sh
 
   spark:
     image: hadoop-3:latest
@@ -60,8 +70,19 @@ services:
       - 8998:8998 # livy localhost:8998/ui
     networks:
       - hadoop
-    command: spark rdd/count_lines.py
-    restart: always
+    command:  ./entrypoint.sh spark rdd/count_lines.py
+    restart: unless-stopped
+    volumes:
+      - ./data/world-cups/:/data/
+      - ./spark/conf/spark-defaults.conf:/opt/spark/conf/spark-defaults.conf
+      - ./hadoop/entrypoint.sh:/opt/hadoop/entrypoint.sh
+
+  solr:
+    image: solr:8-slim
+    ports:
+      - 8983:8983
+    networks:
+      - hadoop
 
   hive:
     image: hadoop-3:latest
@@ -74,10 +95,12 @@ services:
       - 10002:10002
     networks:
       - hadoop
-    command: hive
-
+    command: ./entrypoint.sh  hive
+    volumes:
+      - ./hadoop/entrypoint.sh:/opt/hadoop/entrypoint.sh
+ 
   hue:
-    image: hue:latest
+    image: gethue/hue:4.4.0
     container_name: hue
     depends_on:
       - hive
@@ -85,11 +108,27 @@ services:
       - 8888:8888
     networks:
       - hadoop
-    command: ./build/env/bin/hue runserver_plus 0.0.0.0:8888
-    restart: always
+    restart: unless-stopped
+    volumes:
+      - ./hue/hue.ini:/usr/share/hue/desktop/conf/hue.ini
+      - ./hadoop/entrypoint.sh:/opt/hadoop/entrypoint.sh
+      - ./volumes/hue/:/usr/share/hue/desktop/hue/desktop/
+
+  huedb:
+    image: mysql:8
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - 3306:3306
+    networks:
+      - hadoop
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: pass
+      MYSQL_DATABASE: hue
 
 networks:
   hadoop:
 
 volumes:
   node_manager_tmp:
+  hue_db:

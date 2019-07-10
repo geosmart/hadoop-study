@@ -1,7 +1,13 @@
 #!/bin/bash
 
+ip=$(tail -n 1 /etc/hosts | awk '{ print $1}')
+
+echo "Containe IP: $ip"
+
 if [ "$1" = 'datanode' ]; then
   
+  sed "s/0.0.0.0/$ip/g" /templates/hdfs-site.xml > /opt/hadoop/etc/hadoop/hdfs-site.xml
+
   echo "start HDFS datanode"
   hdfs --daemon start datanode
 
@@ -10,6 +16,7 @@ fi
 
 
 if [ "$1" = 'namenode' ]; then
+
 
   echo "start HDFS namenode"
   hdfs namenode -format -nonInteractive
@@ -27,7 +34,10 @@ if [ "$1" = 'namenode' ]; then
   tail -f $(find logs/*.log)
 fi
 
+
+
 if [ "$1" = 'nodemanager' ]; then
+
 
   echo "start YARN nodemanager"
   yarn --daemon start nodemanager

@@ -26,15 +26,13 @@ Has created a image that contemples mostly hadoop dependencies and
 according the command pass to entrypoint start one or another service.
 This save resources and build time in the final.
 
-
+About Hue
+https://www.cloudera.com/documentation/enterprise/6/latest/topics/hue.html
 ## 1) Images
 
 ```bash
 # hadoop image
-$ docker build -t hadoop-3 images/hadoop/
-
-# hue image
-$ docker build -t hue images/hue/
+$ docker build -t hadoop-3 hadoop/
 ```
 
  - The download steps are the more slow, if this is a problem for you try refac this image, i recommend to you download the .tar files and use `COPY` in Dockerfile else download
