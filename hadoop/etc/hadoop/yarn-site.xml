@@ -9,34 +9,45 @@
   </property>
 
   <!-- cpu and memory -->
-  <!-- <property>
+  <property>
     <name>yarn.nodemanager.resource.vcores</name>
     <value>1</value>
   </property>
   <property>
     <name>yarn.nodemanager.resource.memory-mb</name>
-    <value>2000</value>
-  </property> -->
+    <value>2048</value>
+  </property>
+
+  <!-- scheduler -->
+  <property>
+    <name>yarn.scheduler.minimum-allocation-mb</name>
+    <value>256</value> 
+  </property> 
+ 
+  <property>
+    <name>yarn.scheduler.maximum-allocation-mb</name>
+    <value>2048</value> 
+  </property>
 
   <!-- health checks -->
-  <property>
+  <!-- disk -->
+  <!-- <property>
     <name>yarn.nodemanager.disk-health-checker.enable</name>
     <value>false</value>
   </property>
-  <property>
-    <name>yarn.nodemanager.pmem-check-enabled</name>
-    <value>false</value>
-  </property>
-  <property>
+    <property>
     <name>yarn.nodemanager.disk-health-checker.min-healthy-disks</name>
     <value>0.001</value>
-  </property>
-  <property>
+  </property> -->
+  <!-- memory -->
+  <!-- phisical -->
+  <!-- <property>
     <name>yarn.nodemanager.pmem-check-enabled</name>
     <value>false</value>
-  </property>
-  <property>
+  </property> -->
+  <!-- virtual -->
+  <!-- <property>
     <name>yarn.nodemanager.vmem-check-enabled</name>
     <value>false</value>
-  </property>
+  </property> -->
 </configuration>

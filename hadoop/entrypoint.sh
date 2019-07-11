@@ -79,19 +79,23 @@ if [ "$1" = 'spark' ]; then
 
   echo "make dir /data in hdfs"
   if hdfs dfs -test -d /data/; then
-    echo "/data exists on HDFS"
+    echo "/data dir already exists on HDFS"
   else
     { hdfs dfs -mkdir -p /data; } || { echo "make dir /data error" && exit 1; }
   fi
 
   # assume that if one of files existes all them exists too
   if hdfs dfs -test -e /data/WorldCups.csv; then
-    echo "/data/* exists on HDFS"
+    echo "/data/* already exists on HDFS"
   else
     { hdfs dfs -put /data/* /data/; } || { echo "send data error" && exit 1; }
   fi
 
-
+  if hdfs dfs -test -d /spark/logs; then
+    echo "/spark/logs dir already exists on HDFS"
+  else
+    { hdfs dfs -mkdir -p /spark/logs; } || { echo "make dir /spark/logs" && exit 1; }
+  fi
 
 
   echo "start SPARK master"
@@ -112,6 +116,10 @@ if [ "$1" = 'spark' ]; then
 
   # using yarn cluster
   # pyspark --master yarn
+
+  # local
+  # pyspark --master local[4]
+
 
   # example of submit spark
   # spark-submit \

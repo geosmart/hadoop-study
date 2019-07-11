@@ -4,7 +4,7 @@ FROM ubuntu:xenial
 
 # Refresh package lists
 # RUN apk add net-tools bash curl
-RUN apt update && apt-get install net-tools unzip bash curl default-jdk python -y
+RUN apt update && apt-get install net-tools unzip bash curl default-jdk python nano -y
 
 WORKDIR /opt
 

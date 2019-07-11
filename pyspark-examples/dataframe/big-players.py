@@ -1,4 +1,3 @@
-
 import sys
 
 from pyspark import SparkContext, SparkConf
@@ -13,7 +12,7 @@ def readCSV(path):
 
 
 if __name__ == "__main__":
-  
+
   # create Spark context with Spark configuration
   conf = SparkConf().setAppName("Spark Count")
   sc = SparkContext(conf=conf)

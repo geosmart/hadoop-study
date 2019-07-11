@@ -9,7 +9,17 @@
   </property>
 
   <property>
+     <name>spark.home</name>
+    <value>/opt/spark</value>
+  </property>
+
+  <property>
     <name>hive.execution.engine</name>
     <value>spark</value>
   </property>
+  <property>
+    <name>hive.log.explain.output</name>
+    <value>true</value>
+  </property>
+  
 </configuration>

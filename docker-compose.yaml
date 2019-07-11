@@ -10,7 +10,7 @@ services:
     command: ./entrypoint.sh namenode
     restart: unless-stopped
     volumes:
-      - ./hadoop/etc/hadoop/hdfs-site.xml:/templates/hdfs-site.xml
+      - ./hadoop/etc/hadoop/hdfs-site.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml
       - ./hadoop/entrypoint.sh:/opt/hadoop/entrypoint.sh
  
   datanode:
@@ -39,7 +39,7 @@ services:
     command:  ./entrypoint.sh resourcemanager
     restart: unless-stopped
     volumes:
-      - ./hadoop/etc/hadoop/yarn-site.xml:/templates/yarn-site.xml
+      - ./hadoop/etc/hadoop/yarn-site.xml:/opt/hadoop/etc/hadoop/yarn-site.xml
       - ./hadoop/entrypoint.sh:/opt/hadoop/entrypoint.sh
 
   nodemanager:
@@ -54,7 +54,7 @@ services:
     command:  ./entrypoint.sh nodemanager
     restart: unless-stopped
     volumes:
-      - ./hadoop/etc/hadoop/yarn-site.xml:/templates/yarn-site.xml
+      - ./hadoop/etc/hadoop/yarn-site.xml:/opt/hadoop/etc/hadoop/yarn-site.xml
       - ./hadoop/entrypoint.sh:/opt/hadoop/entrypoint.sh
 
   spark:
@@ -74,9 +74,12 @@ services:
     restart: unless-stopped
     volumes:
       - ./data/world-cups/:/data/
-      - ./spark/conf/spark-defaults.conf:/opt/spark/conf/spark-defaults.conf
-      - ./hadoop/entrypoint.sh:/opt/hadoop/entrypoint.sh
+      - ./hadoop/etc/hadoop/yarn-site.xml:/opt/hadoop/etc/hadoop/yarn-site.xml
       - ./hadoop/livy/livy.conf:/opt/livy/conf/livy.conf
+      - ./spark/conf/spark-defaults.conf:/opt/spark/conf/spark-defaults.conf
+      - ./pyspark-examples/:/pyspark-examples/
+      - ./hadoop/entrypoint.sh:/opt/hadoop/entrypoint.sh
+
 
   solr:
     image: solr:8-slim
@@ -96,7 +99,7 @@ services:
       - 10002:10002
     networks:
       - hadoop
-    command: ./entrypoint.sh  hive
+    command: ./entrypoint.sh hive
     volumes:
       - ./hadoop/entrypoint.sh:/opt/hadoop/entrypoint.sh
  

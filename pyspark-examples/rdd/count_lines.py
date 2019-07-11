@@ -3,7 +3,7 @@ import sys
 from pyspark import SparkContext, SparkConf
 
 if __name__ == "__main__":
-  
+
   # create Spark context with Spark configuration
   conf = SparkConf().setAppName("Spark Count")
   sc = SparkContext(conf=conf)
@@ -21,6 +21,6 @@ if __name__ == "__main__":
   log.info(total_len)
 
   rdd = sc.parallelize([str(total_len)])
-  rdd.saveAsTextFile("hdfs://data/report.txt")
+  rdd.saveAsTextFile("/data/report.txt")
 
   print total_len
