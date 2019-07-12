@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <configuration>
+  <!-- luiz proxy user setting -->
+  <property>
+    <name>httpfs.proxyuser.luiz.hosts</name>
+    <value>*</value>
+  </property>
+  <property>
+    <name>httpfs.proxyuser.luiz.groups</name>
+    <value>*</value>
+  </property>
 
   <!-- HUE proxy user setting -->
   <property>
