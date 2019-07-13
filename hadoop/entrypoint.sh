@@ -98,11 +98,11 @@ if [ "$1" = 'spark' ]; then
   fi
 
 
-  echo "start SPARK master"
-  /opt/spark/sbin/start-master.sh
+  # echo "start SPARK master"
+  # /opt/spark/sbin/start-master.sh
   
-  echo "start SPARK slave"
-  /opt/spark/sbin/start-slave.sh spark:7077
+  # echo "start SPARK slave"
+  # /opt/spark/sbin/start-slave.sh spark:7077
 
   # livy has developed initialy by HUE
   echo "start livy Server"
@@ -121,7 +121,14 @@ if [ "$1" = 'spark' ]; then
   # pyspark --master local[4]
 
 
+
   # example of submit spark
+  # --executor-memory:
+  # is related to yarn.scheduler.maximum-allocation-mb' and 'yarn.nodemanager.resource.memory-mb
+  # example
+  # spark-submit --master yarn --deploy-mode cluster --executor-memory 2G /pyspark-examples/rdd/count_lines.py /data/report5.txt
+
+
   # spark-submit \
   #   --executor-memory 2G \
   #   --total-executor-cores 1 \
