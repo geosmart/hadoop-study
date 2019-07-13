@@ -103,7 +103,12 @@ services:
     volumes:
       - ./hadoop/entrypoint.sh:/opt/hadoop/entrypoint.sh
  
-  hue:
+ #################################################
+ # hue section below
+ #################################################
+ # if fail, enter in cointainer and run -> ./build/env/bin/hue migrate
+
+  hue: # see https://github.com/cloudera/hue/tree/master/tools/docker
     image: gethue/hue:4.4.0
     container_name: hue
     depends_on:
@@ -113,10 +118,12 @@ services:
     networks:
       - hadoop
     restart: unless-stopped
+    depends_on:
+      - huedb
     volumes:
       - ./hue/hue.ini:/usr/share/hue/desktop/conf/hue.ini
-      - ./hadoop/entrypoint.sh:/opt/hadoop/entrypoint.sh
-      - ./volumes/hue/:/usr/share/hue/desktop/hue/desktop/
+      - ./hue/entrypoint.sh:/usr/share/hue/entrypoint.sh
+      - ./volumes/hue:/volumes/hue
 
   huedb:
     image: mysql:8
@@ -129,10 +136,12 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: pass
       MYSQL_DATABASE: hue
+    volumes:
+      - huedb-datavolume:/var/lib/mysql
 
 networks:
   hadoop:
 
+
 volumes:
-  node_manager_tmp:
-  hue_db:
+  huedb-datavolume:
