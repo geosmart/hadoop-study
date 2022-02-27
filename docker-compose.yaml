@@ -12,11 +12,11 @@ services:
     volumes:
       - ./hadoop/etc/hadoop/hdfs-site.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml
       - ./hadoop/entrypoint.sh:/opt/hadoop/entrypoint.sh
- 
+
   datanode:
     image: hadoop-3:latest
     container_name: datanode
-    depends_on: 
+    depends_on:
       - namenode
     networks:
       - hadoop
@@ -29,14 +29,14 @@ services:
   resourcemanager:
     image: hadoop-3:latest
     container_name: resourcemanager
-    depends_on: 
+    depends_on:
       - datanode
       - namenode
     ports:
       - 8088:8088 # yarn resourcemanager ui
     networks:
       - hadoop
-    command:  ./entrypoint.sh resourcemanager
+    command: ./entrypoint.sh resourcemanager
     restart: unless-stopped
     volumes:
       - ./hadoop/etc/hadoop/yarn-site.xml:/opt/hadoop/etc/hadoop/yarn-site.xml
@@ -45,13 +45,13 @@ services:
   nodemanager:
     image: hadoop-3:latest
     container_name: nodemanager
-    depends_on: 
+    depends_on:
       - resourcemanager
     networks:
       - hadoop
-    # ports:
-    #   - 8042:8042 # yarn nodemanager ui
-    command:  ./entrypoint.sh nodemanager
+    #    ports:
+    #      - 8042:8042 # yarn nodemanager ui
+    command: ./entrypoint.sh nodemanager
     restart: unless-stopped
     volumes:
       - ./hadoop/etc/hadoop/yarn-site.xml:/opt/hadoop/etc/hadoop/yarn-site.xml
@@ -60,17 +60,17 @@ services:
   spark:
     image: hadoop-3:latest
     container_name: spark
-    depends_on: 
+    depends_on:
       - resourcemanager
       - namenode
       - datanode
     ports: # only if use SPARK own resource manager
-      - 8081:8081 # spark worker ui
-      - 8080:8080 # spark master ui
-      - 8998:8998 # livy localhost:8998/ui
+      - 18081:8081 # spark worker ui
+      - 18080:8080 # spark master ui
+      - 18998:8998 # livy localhost:8998/ui
     networks:
       - hadoop
-    command:  ./entrypoint.sh spark rdd/count_lines.py
+    command: ./entrypoint.sh spark rdd/count_lines.py
     restart: unless-stopped
     volumes:
       - ./data/world-cups/:/data/
@@ -83,6 +83,7 @@ services:
 
   solr:
     image: solr:8-slim
+    container_name: solr
     ports:
       - 8983:8983
     networks:
@@ -91,42 +92,43 @@ services:
   hive:
     image: hadoop-3:latest
     container_name: hive
-    depends_on: 
+    depends_on:
       - resourcemanager
       - namenode
       - datanode
     ports:
       - 10002:10002
+      - 10000:10000
     networks:
       - hadoop
     command: ./entrypoint.sh hive
     volumes:
       - ./hadoop/entrypoint.sh:/opt/hadoop/entrypoint.sh
- 
- #################################################
- # hue section below
- #################################################
- # if fail, enter in cointainer and run -> ./build/env/bin/hue migrate
+
+  #################################################
+  # hue section below
+  #################################################
+  # if fail, enter in cointainer and run -> ./build/env/bin/hue migrate
 
   hue: # see https://github.com/cloudera/hue/tree/master/tools/docker
     image: gethue/hue:4.4.0
     container_name: hue
     depends_on:
       - hive
+      - huedb
     ports:
       - 8888:8888
     networks:
       - hadoop
     restart: unless-stopped
-    depends_on:
-      - huedb
     volumes:
       - ./hue/hue.ini:/usr/share/hue/desktop/conf/hue.ini
       - ./hue/entrypoint.sh:/usr/share/hue/entrypoint.sh
       - ./volumes/hue:/volumes/hue
 
   huedb:
-    image: mysql:8
+    image: mysql:5.7
+    container_name: mysql-hue
     command: --default-authentication-plugin=mysql_native_password
     ports:
       - 3306:3306

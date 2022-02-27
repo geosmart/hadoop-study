@@ -9,20 +9,20 @@ RUN apt update && apt-get install net-tools unzip bash curl default-jdk python n
 WORKDIR /opt
 
 # Hadoop
-RUN curl -L http://ftp.unicamp.br/pub/apache/hadoop/common/hadoop-3.1.1/hadoop-3.1.1.tar.gz -s -o - | tar -xzf -
+RUN curl -L http://archive.apache.org/dist/hadoop/common/hadoop-3.1.1/hadoop-3.1.1.tar.gz -s -o - | tar -xzf -
 
 RUN mv hadoop-3.1.1 hadoop
 
 # spark
-RUN curl -L http://ftp.unicamp.br/pub/apache/spark/spark-2.4.3/spark-2.4.3-bin-hadoop2.7.tgz -o - | tar -xzf -
+RUN curl -L http://archive.apache.org/dist/spark/spark-2.4.3/spark-2.4.3-bin-hadoop2.7.tgz -o - | tar -xzf -
 RUN mv spark-2.4.3-bin-hadoop2.7 spark
 
 # livy (spark rest server)
-RUN curl http://ftp.unicamp.br/pub/apache/incubator/livy/0.5.0-incubating/livy-0.5.0-incubating-bin.zip -o livy-0.5.0-incubating-bin.zip
-RUN unzip livy-0.5.0-incubating-bin.zip && mv livy-0.5.0-incubating-bin livy && rm livy-0.5.0-incubating-bin.zip
+RUN curl http://archive.apache.org/dist/incubator/livy/0.7.1-incubating/apache-livy-0.7.1-incubating-bin.zip   -o livy-0.7.1-incubating-bin.zip
+RUN unzip livy-0.7.1-incubating-bin.zip && mv apache-livy-0.7.1-incubating-bin livy && rm livy-0.7.1-incubating-bin.zip
 
 # hive
-RUN curl -L http://ftp.unicamp.br/pub/apache/hive/hive-3.1.1/apache-hive-3.1.1-bin.tar.gz -s -o - | tar -xzf -
+RUN curl -L http://archive.apache.org/dist/hive/hive-3.1.1/apache-hive-3.1.1-bin.tar.gz -s -o - | tar -xzf -
 
 RUN mv apache-hive-3.1.1-bin hive
 

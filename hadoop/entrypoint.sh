@@ -56,7 +56,7 @@ if [ "$1" = 'resourcemanager' ]; then
   hadoop dfsadmin -safemode leave
 
   # echo "start YARN proxyserver"
-  # /opt/hadoop/bin/yarn --daemon start proxyserver
+  /opt/hadoop/bin/yarn --daemon start proxyserver
 
   tail -f $(find /opt/hadoop/logs/*.log)
 fi
@@ -126,7 +126,7 @@ if [ "$1" = 'spark' ]; then
   # --executor-memory:
   # is related to yarn.scheduler.maximum-allocation-mb' and 'yarn.nodemanager.resource.memory-mb
   # example
-  # spark-submit --master yarn --deploy-mode cluster --executor-memory 2G /pyspark-examples/rdd/count_lines.py /data/report5.txt
+  spark-submit --master yarn --deploy-mode cluster --executor-memory 2G /pyspark-examples/rdd/count_lines.py /data/report5.txt
 
 
   # spark-submit \
@@ -148,7 +148,7 @@ if [ "$1" = 'hive' ]; then
   # https://cwiki.apache.org/confluence/display/Hive/Hive+Schema+Tool
   schematool -dbType derby -initSchema
   hive --service hiveserver2
-  # create database world_cups;
-  # beeline -u jdbc:hive2://localhost:10000/default --hiveconf hive.execution.engine=spark 
+#  create database world_cups;
+#  beeline -u jdbc:hive2://localhost:10000/default --hiveconf hive.execution.engine=spark
 
 fi
