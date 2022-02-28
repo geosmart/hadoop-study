@@ -111,6 +111,12 @@ The node manager, sends info about your resources to resource manager.
 $ yarn --daemon start nodemanager
 ```
 
+### yarn-mapreduce-example
+```s
+hadoop jar  share/hadoop/mapreduce/hadoop-mapreduce-examples-3.1.1.jar  \
+wordcount /hello.txt /output
+```
+
 ## Spark
 **Spark** is a alternative to Hadoop mapReduce layer, but uses memory else disk.
 

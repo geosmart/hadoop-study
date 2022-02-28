@@ -49,8 +49,8 @@ services:
       - resourcemanager
     networks:
       - hadoop
-    #    ports:
-    #      - 8042:8042 # yarn nodemanager ui
+    ports:
+      - 8042:8042 # yarn nodemanager ui
     command: ./entrypoint.sh nodemanager
     restart: unless-stopped
     volumes:
@@ -65,9 +65,9 @@ services:
       - namenode
       - datanode
     ports: # only if use SPARK own resource manager
-      - 18081:8081 # spark worker ui
-      - 18080:8080 # spark master ui
-      - 18998:8998 # livy localhost:8998/ui
+      - 8081:8081 # spark worker ui
+      - 8080:8080 # spark master ui
+      - 8998:8998 # livy localhost:8998/ui
     networks:
       - hadoop
     command: ./entrypoint.sh spark rdd/count_lines.py

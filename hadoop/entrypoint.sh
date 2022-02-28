@@ -55,8 +55,8 @@ if [ "$1" = 'resourcemanager' ]; then
   echo "disable safe mode in hdfs"
   hadoop dfsadmin -safemode leave
 
-  # echo "start YARN proxyserver"
-  /opt/hadoop/bin/yarn --daemon start proxyserver
+# echo "start YARN proxyserver"
+#  /opt/hadoop/bin/yarn --daemon start proxyserver
 
   tail -f $(find /opt/hadoop/logs/*.log)
 fi
